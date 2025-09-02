@@ -1,0 +1,43 @@
+# Virtual environment
+env/
+venv/
+.venv/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+
+# Logs
+*.log
+
+# Documentation
+README.md
+*.md
+
+# Test files
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Environment files (should be passed via docker-compose)
+.env
+
+# Database (will be mounted as volume)
+knowledge.db
