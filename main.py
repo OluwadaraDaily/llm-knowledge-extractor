@@ -31,16 +31,15 @@ async def analyze(request: InputText):
     input_text=request.text,
     summary=openai_response.get("summary", ""),
     title=openai_response.get("title", ""),
-    topics=openai_response.get("topics", []),
+    topics=openai_response.get("key_topics", []),
     sentiment=openai_response.get("sentiment", ""),
     keywords=nlp_response
   )
-  analysis_id = await analysis.save()
+  await analysis.save()
 
   response = {
      **openai_response,
      "keywords": nlp_response,
-     "analysis_id": analysis_id,
   }
   
   return response
