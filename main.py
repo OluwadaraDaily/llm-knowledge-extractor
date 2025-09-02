@@ -1,4 +1,4 @@
-from typing import Union
+from typing import Union, Optional
 
 from fastapi import FastAPI
 from pydantic import BaseModel
@@ -43,3 +43,47 @@ async def analyze(request: InputText):
   }
   
   return response
+
+@app.get("/search")
+async def search(
+  keyword: Optional[str] = None,
+  sentiment: Optional[str] = None
+):
+  
+  if keyword:
+    analyses = await Analysis.search_by_keyword(keyword)
+    return {
+      "data": [
+        {
+          "id": analysis.id,
+          "input_text": analysis.input_text,
+          "summary": analysis.summary,
+          "title": analysis.title,
+          "topics": analysis.topics,
+          "sentiment": analysis.sentiment,
+          "keywords": analysis.keywords,
+          "created_at": analysis.created_at
+        }
+        for analysis in analyses
+      ]
+    }
+  
+  if sentiment:
+    analyses = await Analysis.search_by_sentiment(sentiment)
+    return {
+      "data": [
+        {
+          "id": analysis.id,
+          "input_text": analysis.input_text,
+          "summary": analysis.summary,
+          "title": analysis.title,
+          "topics": analysis.topics,
+          "sentiment": analysis.sentiment,
+          "keywords": analysis.keywords,
+          "created_at": analysis.created_at
+        }
+        for analysis in analyses
+      ]
+    }
+  
+  return {"error": "No keyword or sentiment provided"}
