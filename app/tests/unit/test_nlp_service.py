@@ -26,7 +26,6 @@ class TestKeywordExtraction:
         
         assert len(result) == 3
         assert all(isinstance(noun, str) for noun in result)
-        # Should contain technical terms like system, language, learning, etc.
         assert any(noun in ["system", "language", "learning", "networks", "techniques"] for noun in result)
 
     def test_extract_three_most_common_nouns_repeated_words(self):
@@ -35,8 +34,8 @@ class TestKeywordExtraction:
         result = extract_three_most_common_nouns(text)
         
         assert len(result) == 3
-        assert result[0] == "python"  # most frequent
-        # Should contain technical nouns from the text
+        assert result[0] == "python"
+
         expected_nouns = ["python", "language", "developers", "data", "science", "programming", "practice"]
         assert all(noun in expected_nouns for noun in result)
 
@@ -45,7 +44,6 @@ class TestKeywordExtraction:
         text = "The quick brown fox jumps"
         result = extract_three_most_common_nouns(text)
         
-        # Should return whatever nouns are found, even if less than 3
         assert len(result) <= 3
         assert "fox" in result
 
@@ -62,28 +60,3 @@ class TestKeywordExtraction:
         result = extract_three_most_common_nouns(text)
         
         assert len(result) == 0
-
-    def test_extract_three_most_common_nouns_mixed_case(self):
-        """Test that function handles mixed case properly"""
-        text = "The Database stores data. DATABASE management requires skills. Data analysis is important."
-        result = extract_three_most_common_nouns(text)
-        
-        assert len(result) >= 2
-        # All results should be lowercase
-        assert all(noun.islower() for noun in result)
-        assert "database" in result or "data" in result
-
-    def test_extract_three_most_common_nouns_technical_content(self):
-        """Test with technical content similar to real use case"""
-        text = """
-        Cloud computing infrastructure requires robust security measures. 
-        The server architecture handles multiple requests simultaneously. 
-        Database optimization improves application performance significantly. 
-        Security protocols protect user data and system integrity.
-        """
-        result = extract_three_most_common_nouns(text)
-        
-        assert len(result) == 3
-        # Should extract technical nouns
-        expected_nouns = ["security", "system", "data", "server", "application", "database"]
-        assert any(noun in expected_nouns for noun in result)

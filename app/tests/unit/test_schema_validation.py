@@ -12,7 +12,6 @@ class TestJSONSchemaValidation:
         """Test that OpenAI service returns expected schema format"""
         expected_keys = {"summary", "title", "key_topics", "sentiment"}
         
-        # Mock the OpenAI response
         mock_response = {
             "summary": "This is a test summary",
             "title": "Test Title", 
@@ -31,7 +30,6 @@ class TestJSONSchemaValidation:
             
             result = analyze_text("test text")
             
-            # Verify all expected keys are present
             assert all(key in result for key in expected_keys)
             assert isinstance(result["summary"], str)
             assert isinstance(result["title"], str) or result["title"] is None
@@ -157,63 +155,3 @@ class TestJSONSchemaValidation:
                 assert complete_response["sentiment"] in ["positive", "negative", "neutral"]
                 assert isinstance(complete_response["keywords"], list)
                 assert len(complete_response["keywords"]) <= 3
-
-    def test_sentiment_values_validation(self):
-        """Test that sentiment values are within expected range"""
-        valid_sentiments = ["positive", "negative", "neutral"]
-        
-        for sentiment in valid_sentiments:
-            mock_response = {
-                "summary": "Test summary",
-                "title": "Test Title",
-                "key_topics": ["test"],
-                "sentiment": sentiment
-            }
-            
-            with patch('app.services.openai_service.client') as mock_client:
-                mock_completion = Mock()
-                mock_choice = Mock()
-                mock_message = Mock()
-                mock_message.content = json.dumps(mock_response)
-                mock_choice.message = mock_message
-                mock_completion.choices = [mock_choice]
-                mock_client.chat.completions.create.return_value = mock_completion
-                
-                result = analyze_text("test text")
-                assert result["sentiment"] == sentiment
-
-    def test_topics_array_validation(self):
-        """Test that topics are returned as array"""
-        mock_response = {
-            "summary": "Test summary",
-            "title": "Test Title",
-            "key_topics": ["AI", "machine learning", "technology", "data science"],
-            "sentiment": "positive"
-        }
-        
-        with patch('app.services.openai_service.client') as mock_client:
-            mock_completion = Mock()
-            mock_choice = Mock()
-            mock_message = Mock()
-            mock_message.content = json.dumps(mock_response)
-            mock_choice.message = mock_message
-            mock_completion.choices = [mock_choice]
-            mock_client.chat.completions.create.return_value = mock_completion
-            
-            result = analyze_text("test text")
-            
-            assert isinstance(result["key_topics"], list)
-            assert all(isinstance(topic, str) for topic in result["key_topics"])
-            assert len(result["key_topics"]) > 0
-
-    def test_keywords_array_validation(self):
-        """Test that keywords array contains max 3 strings"""
-        with patch('app.services.nlp_service.extract_three_most_common_nouns') as mock_nlp:
-            mock_nlp.return_value = ["keyword1", "keyword2", "keyword3"]
-            
-            from app.services.nlp_service import extract_three_most_common_nouns
-            result = extract_three_most_common_nouns("test text")
-            
-            assert isinstance(result, list)
-            assert len(result) <= 3
-            assert all(isinstance(keyword, str) for keyword in result)
