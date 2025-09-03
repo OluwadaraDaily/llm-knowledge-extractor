@@ -15,7 +15,7 @@ An intelligent text analysis application that extracts key insights from text sn
 ```json
 {
   "summary": "The local church serves as a community for Christians and also welcomes non-believers, but it often faces challenges in encouraging both believers to attend and non-believers to join. The text emphasizes the importance of meeting together for mutual support and encouragement among believers.",
-  "title": null,
+  "title": "Text Title",
   "key_topics": [
       "community",
       "church attendance",
