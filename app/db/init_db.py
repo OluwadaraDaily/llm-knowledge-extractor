@@ -11,5 +11,9 @@ async def initialize_database():
     await run_migrations()
     print("Database initialization completed!")
 
-if __name__ == "__main__":
+def main():
+    """Main entry point for database initialization."""
     asyncio.run(initialize_database())
+
+if __name__ == "__main__":
+    main()

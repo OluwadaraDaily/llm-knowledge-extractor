@@ -3,14 +3,14 @@ from collections import Counter
 
 # Download required NLTK data
 try:
-    nltk.data.find('tokenizers/punkt')
+    nltk.data.find('tokenizers/punkt_tab')
 except LookupError:
-    nltk.download('punkt')
+    nltk.download('punkt_tab')
 
 try:
-    nltk.data.find('taggers/averaged_perceptron_tagger')
+    nltk.data.find('taggers/averaged_perceptron_tagger_eng')
 except LookupError:
-    nltk.download('averaged_perceptron_tagger')
+    nltk.download('averaged_perceptron_tagger_eng')
 
 def extract_three_most_common_nouns(text):
     words = nltk.word_tokenize(text.lower())
